@@ -100,6 +100,11 @@ function createAndPlayMelody(pixelGroups, key, sweep, instrument) {
 	});
 }
 
+function playChord(chord, delay) {
+    MIDI.chordOn(0, chord, 127, delay);
+    MIDI.chordOff(0, chord, delay+1);
+}
+
 function playNotes(i, notesData) {
     if (!isPlaying) {
         imgContext.clearRect(0, 0, canvas.width, canvas.height);
@@ -108,13 +113,14 @@ function playNotes(i, notesData) {
 		oldSweepPos = drawNextSweeper(oldSweepPos, canvas, imgContext, sweep);
 		setFilters(notesData[i].lum, effect);
 
-        var velocity = 127; 
         MIDI.setVolume(0, 127);
-        MIDI.chordOn(0, [notesData[i].redNote, notesData[i].greenNote, notesData[i].blueNote], velocity);
-    	setTimeout(function(){
-	    		MIDI.chordOff(0, [notesData[i].redNote, notesData[i].greenNote, notesData[i].blueNote]);
-	    		playNotes(i+1, notesData);
-	    	}, notesData[i].duration);
+        playChord([notesData[i].redNote, notesData[i].greenNote, notesData[i].blueNote], i);
+        playNotes(i+1, notesData);
+        //MIDI.chordOn(0, [notesData[i].redNote, notesData[i].greenNote, notesData[i].blueNote], velocity);
+    	//setTimeout(function(){
+	   // 		MIDI.chordOff(0, [notesData[i].redNote, notesData[i].greenNote, notesData[i].blueNote]);
+	   // 		playNotes(i+1, notesData);
+	   // 	}, notesData[i].duration);
 	} else {
 			looper = $('#loop-btn');
 			if (looper.hasClass('active')) {

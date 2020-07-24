@@ -25,7 +25,6 @@ function getImgData(img, sweep, imgContext) {
 	}
 
 	pixelGroups = adjustPixelGroupOrder(pixelGroups, sweep);
-	console.log(pixelGroups.length);
 
 	return pixelGroups;
 }

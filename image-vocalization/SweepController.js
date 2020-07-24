@@ -309,7 +309,7 @@ function adjustSweepReqsBySweep(oldSweepPos, sweep, canvas) {
 function drawInitSweeper(sweep, canvas, imgContext) {
 	imgContext.beginPath();
 	imgContext.lineWidth = canvas.width/100;
-	sweeperColor = $('#color-picker').val();
+	sweeperColor = "#ff0000"
 	imgContext.strokeStyle = sweeperColor;
 
 	var sweepPos = getSweepStart(sweep, canvas);

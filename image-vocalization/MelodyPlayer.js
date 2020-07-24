@@ -25,14 +25,16 @@ function play() {
 	createAndPlayMelody(pixelGroups, key, sweep, instrument);
 }
 
+function pause() {
+    isPlaying = false;
+}
+
 function setUpCorrectly() {
-	//img = document.getElementById('user-img');
 	if (uploadedImg == undefined) {
 		alert("Please upload an image before playing.");
 		return false;
 	}
 
-	// sweep = $('#sweep-form input[type=radio]:checked').val();
 	sweep = $('#sweeper-picker').find(':selected').val();
 	if (sweep == "") {
 		alert("Please select a sweeping pattern before playing.");
@@ -41,23 +43,19 @@ function setUpCorrectly() {
 		sweep = possibleSweeps[Math.floor(Math.random() * possibleSweeps.length)];
 	}
 
-	// key = $('#key-form input[type=radio]:checked').val();
 	key = $('#key-picker').find(':selected').val();
-
 	if (key == "") {
 		alert("Please select a key before playing.");
 		return false;
 	}
 
 	instrument = $('#instrument-picker').find(':selected').val();
-
 	if (instrument == "") {
 		alert("Please select an instrument before playing.");
 		return false;
 	}
 
 	effect = $('#effects-picker').find(':selected').val();
-
 	return true;
 }
 
@@ -82,7 +80,6 @@ function createAndPlayMelody(pixelGroups, key, sweep, instrument) {
 		var blueNote = getPitchInKey(pixelGroups[i].blue, key);
 		var duration = getNoteLength(notesData, pixelGroups, i);
 		var luminosity = 0.2126*pixelGroups[i].red + 0.7152*pixelGroups[i].green + 0.0722*pixelGroups[i].blue;
-		// var sweeps = pixelGroups[i].reqs;
 
 		notesData.push({
 			redNote: redNote,
@@ -90,7 +87,6 @@ function createAndPlayMelody(pixelGroups, key, sweep, instrument) {
 			blueNote: blueNote,
 			duration: duration,
 			lum: luminosity,
-			// sweeps: sweeps
 		});
 	}
 
@@ -105,7 +101,10 @@ function createAndPlayMelody(pixelGroups, key, sweep, instrument) {
 }
 
 function playNotes(i, notesData) {
-	if (i < notesData.length) {
+    if (!isPlaying) {
+        imgContext.clearRect(0, 0, canvas.width, canvas.height);
+        imgContext.drawImage(uploadedImg, 0, 0);
+    } else if (i < notesData.length) {
 		oldSweepPos = drawNextSweeper(oldSweepPos, canvas, imgContext, sweep);
 		setFilters(notesData[i].lum, effect);
 

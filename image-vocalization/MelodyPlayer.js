@@ -116,7 +116,7 @@ function createAndPlayMelody(pixelGroups, key, sweep, instrument) {
 
 console.log(instrument);
 	MIDI.loadPlugin({
-	    soundfontUrl: "http://gleitz.github.io/midi-js-soundfonts/FluidR3_GM/",
+	    soundfontUrl: "https://gleitz.github.io/midi-js-soundfonts/FluidR3_GM/",
 	    instrument: instrument,
 	    onsuccess: function() {
 	    	MIDI.programChange(0, MIDI.GM.byName[instrument].number);

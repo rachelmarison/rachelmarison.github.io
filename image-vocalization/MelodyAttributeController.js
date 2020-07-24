@@ -69,13 +69,6 @@ function getNoteLength(notesData, pixelGroups, i) {
         var prevLum = notesData[i - 3].lum;
         delta = Math.abs(prevLum - currentLum);  //delta will be in the range of 0 to 255
     }
-    //console.log("delta: " + ((255 - delta) / 255) * 1000)
-    //return (delta % 1.2) * 1000; //version 1
-    // var test = Math.ceil(delta / 63.75); //v3
-    // console.log("test: " + test);
-    // console.log("delta: " + ((255 - delta) / 600));
-    // return 1000 / test; //v3
-    //return ((255 - delta) / 600); // v2: 255 split into 1.2 groups is 212.5 per group
     return (((255 - delta) / 600) * 1000)
 }
 
@@ -143,7 +136,6 @@ function setFilters(lum, effect) {
             break;
         case 'bitcrusher':
             normfreq = 1 / lum; // higher lum -> normfreq closer to 0 -> more bitcrushing noise
-            console.log(normfreq);
             MIDI.setEffects([{
                 type: "Bitcrusher",
                 bits: 4,          //1 to 16
@@ -182,7 +174,6 @@ function setFilters(lum, effect) {
         case 'panner':
             pan = lum / 255;
             pan = Math.random() < 0.5 ? 0 - pan : pan;
-            console.log(pan);
             MIDI.setEffects([{
                 type: "Panner",
                 pan: pan // -1 (left) to 1 (right)

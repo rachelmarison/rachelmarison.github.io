@@ -58,21 +58,10 @@ function setUpCorrectly() {
 
 	effect = $('#effects-picker').find(':selected').val();
 
-	// if (effect == "") {
-	// 	alert("Please select a sound effect before playing.");
-	// 	return false;
-	// }
-
 	return true;
 }
 
 function setUpCanvas(event) {
-	// var canvas = document.createElement('canvas');
-	// canvas.width = img.width;
-	// canvas.height = img.height;
-	// return canvas;
-
-	//$('#user-img').attr('src', e.target.result);
 	canvas=document.getElementById("my-canvas");
 	imgContext=canvas.getContext("2d");
 	uploadedImg = new Image();
@@ -105,16 +94,6 @@ function createAndPlayMelody(pixelGroups, key, sweep, instrument) {
 		});
 	}
 
-	// for (var i = 0; i < notesData.length; i++) {
-	// 	// console.log("redNote: " + notesData[i].redNote);
-	// 	// console.log("greenNote: " + notesData[i].greenNote);
-	// 	// console.log("blueNote: " + notesData[i].blueNote);
-	// 	//console.log("duration: " + notesData[i].duration);
-	// 	console.log(notesData[i].sweeps);
-	// 	console.log("");
-	// }			
-
-console.log(instrument);
 	MIDI.loadPlugin({
 	    soundfontUrl: "https://gleitz.github.io/midi-js-soundfonts/FluidR3_GM/",
 	    instrument: instrument,
@@ -137,12 +116,7 @@ function playNotes(i, notesData) {
 	    		MIDI.chordOff(0, [notesData[i].redNote, notesData[i].greenNote, notesData[i].blueNote]);
 	    		playNotes(i+1, notesData);
 	    	}, notesData[i].duration);
-    	//MIDI.chordOn(0, [notesData[i].redNote, notesData[i].greenNote, notesData[i].blueNote], velocity, clockDelay);
-    	//MIDI.chordOff(0, [notesData[i].redNote, notesData[i].greenNote, notesData[i].blueNote], clockDelay + notesData[i].duration);
-    	//clockDelay += notesData[i].duration;
-    	//playNotes(i+1, clockDelay, notesData);
 	} else {
-			console.log('done');
 			looper = $('#loop-btn');
 			if (looper.hasClass('active')) {
 				//loop through the song (start playing all over)
@@ -154,34 +128,3 @@ function playNotes(i, notesData) {
 			}
 	}
 }
-
-// function setTimedFilters(i, notesData) {
-// 	if (i < notesData.length) {
-// 		oldSweepPos = drawNextSweeper(oldSweepPos, canvas, imgContext, sweep);
-
-// 		setFilters(notesData[i].lum, effect);
-// 		setTimeout(function(){setTimedFilters(i+1, notesData);}, notesData[i].duration*1000);
-// 	}
-// }
-
-//to use soundfont-player:
-//var audioContext = new AudioContext();
-//var schedule;
-
-// console.log(luminosity);
-	// schedule = [];
-	// var clock = 0;
-	
-	// for (var i = 0; i < pixelGroups.length; i++) {
-	// 	var frequency = Math.floor(pixelGroups[i].red % 88) + 21;
-	// 	var noteLength = getNoteLength(pixelGroups[i].green);
-	// 	schedule.push({
-	// 		time: clock,
-	// 		note: frequency
-	// 	});
-	// 	clock += noteLength;
-	// }
-
-	// 	Soundfont.instrument(audioContext, 'acoustic_grand_piano', {attack: 0}).then(function (piano) {
-// 			piano.schedule(audioContext.currentTime, schedule)
-	// });

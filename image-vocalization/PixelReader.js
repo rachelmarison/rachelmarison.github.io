@@ -22,11 +22,6 @@ function getImgData(img, sweep, imgContext) {
 		//set new x, y, width, and height here. This will also differ depending
 		//on the sweeping pattern
 		reqs = updateSweepRequirements(img, sweep, reqs);
-
-		// for (var i = 0; i < pixelGroups.length; i++) {
-		// 	console.log(pixelGroups[i].reqs);
-		// }
-		// console.log("_____________");
 	}
 
 	pixelGroups = adjustPixelGroupOrder(pixelGroups, sweep);

@@ -20,8 +20,6 @@ function getSweepRequirements(img, sweep) {
 	horizontalHeightBlocked = Math.ceil(img.height / 5);
 	swirlWidth = img.width;
 	swirlHeight = img.height;
-	//console.log("v: " + verticalWidthBlocked);
-	//console.log("h: " + horizontalHeightBlocked);
 
 	switch(sweep) {
 		case 'right-to-left':

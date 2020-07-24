@@ -24,8 +24,8 @@ https://github.com/Theodeus/tuna
 	
 	<script src="screenfull.js"></script>
 	
-	<script src="soundfont-player.min.js"></script>
-	<script type="text/javascript" src="midiAccess.js"></script>
+	<!--<script src="soundfont-player.min.js"></script>
+	<script type="text/javascript" src="midiAccess.js"></script>-->
 	<script type="text/javascript" src="SweepController.js"></script>
 	<script type="text/javascript" src="PixelReader.js"></script>
 	<script type="text/javascript" src="MelodyAttributeController.js"></script>
@@ -35,19 +35,8 @@ https://github.com/Theodeus/tuna
 	<script src="MIDI/Base64.js" type="text/javascript"></script>
 	<script src="MIDI/Base64binary.js" type="text/javascript"></script>
 	<script src="MIDI/WebAudioAPI.js" type="text/javascript"></script>
-	<!-- midi.js package -->
-	<script src="MIDI/audioDetect.js" type="text/javascript"></script>
-	<script src="MIDI/gm.js" type="text/javascript"></script>
-	<script src="MIDI/loader.js" type="text/javascript"></script>
-	<script src="MIDI/plugin.audiotag.js" type="text/javascript"></script>
-	<script src="MIDI/plugin.webaudio.js" type="text/javascript"></script>
-	<script src="MIDI/plugin.webmidi.js" type="text/javascript"></script>
-	<!-- utils -->
-	<script src="MIDI/dom_request_xhr.js" type="text/javascript"></script>
-	<script src="MIDI/dom_request_script.js" type="text/javascript"></script>
 	
 	<script src="tuna-min.js"></script>
-
 	<script>
 		window.onload = function() {
 			var elem = document.getElementById('my-canvas');
@@ -102,14 +91,6 @@ https://github.com/Theodeus/tuna
 </head>
 
 <body class="background-pic">
-	<!-- <div class="title">
-		<h1>Senior Design: Image Vocalization</h1>
-	</div>
-	<hr> -->
-
-<!--     	<img id="user-img" src="pixels4.jpg" alt="your uploaded image"/> <br>
- -->
- 	   	<!-- <button id="midi-btn" onclick="getMidi()">Get Midi Access</button> -->
 	<nav class="navbar navbar-default navbar-fixed-top">
 		<div class="container">
 		    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -161,11 +142,6 @@ https://github.com/Theodeus/tuna
 				    <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
 			      		<div class="panel-body">
 			         		<form id="sweep-form">
-						 	   	<!-- Left to Right: <input type="radio" name="sweeps" id="left-to-right" value="left-to-right">
-						 	   	Right to Left: <input type="radio" name="sweeps" id="right-to-left" value="right-to-left">
-						 	   	Top to Bottom: <input type="radio" name="sweeps" id="top-to-bottom" value="top-to-bottom">
-						 	    Bottom to Top: <input type="radio" name="sweeps" id="bottom-to-top" value="bottom-to-top">
-						 	    Blocked: <input type="radio" name="sweeps" id="blocked" value="blocked"> -->
 								<select class="selectpicker" id="sweeper-picker" title="select one...">
 									<option selected = "selected" value="left-to-right">Left to Right</option>
 								  	<option value="right-to-left">Right to Left</option>
@@ -190,10 +166,6 @@ https://github.com/Theodeus/tuna
 				    <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
 			      		<div class="panel-body">
 			         		<form id="key-form">
-							 	<!-- C: <input type="radio" id="keyOfC" value="keyOfC">
-							 	G: <input type="radio" id="keyOfG" value="keyOfG">
-							 	D: <input type="radio" id="keyOfD" value="keyOfD">
-							 	A: <input type="radio" id="keyOfA" value="keyOfA"> -->
 							 	<select class="selectpicker" id="key-picker" title="select one...">
 							 		<option value="keyOfF">F</option>
 									<option selected = "selected" value="keyOfC">C</option>
@@ -243,22 +215,6 @@ https://github.com/Theodeus/tuna
 				    </div>
 				</div>
 
-				<!-- group 5: sweeper color -->
-			<!-- 	<div class="panel panel-default">
-				    <div class="panel-heading" role="tab" id="headingFive" data-toggle="collapse" data-target="#collapseFive">
-				     	<h4 class="panel-title">
-					        <a class="collapsed" role="button" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">Select a sweeper color:</a>
-				      	</h4>
-				    </div>
-				    <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
-			      		<div class="panel-body">
-			         		<form action="action_page.php">
-								<input type="color" id="color-picker" value="#ff0000">
-							</form>
-			      		</div>
-				    </div>
-				</div> -->
-
 				<!-- group 5: sound effects -->
 				<div class="panel panel-default">
 				    <div class="panel-heading" role="tab" id="headingSix" data-toggle="collapse" data-target="#collapseSix">
@@ -275,9 +231,6 @@ https://github.com/Theodeus/tuna
 									<option value="phaser">Phaser</option>
 									<option value="chorus">Chorus</option>
 									<option value="delay">Delay</option>
-									<!-- <option value="bitcrusher">Bitcrusher</option>
-									<option value="moog">Moog</option>
-									<option value="overdrive">Overdrive</option> -->
 									<option value="pingpong">Ping Pong Delay</option>
 									<option value="panner">Stereo Panner</option>
 									<option value="gain">Gain</option>
@@ -296,15 +249,15 @@ https://github.com/Theodeus/tuna
 	    		<canvas id="my-canvas" src="#"></canvas>
 	    		<hr>
 	    		<div class="btn-array">
-		    		<button type="button" class="btn btn-primary" id="color-btn">
-						<input type="color" id="color-picker" value="#ff0000">
-		    		</button>
+                    <button type="button" class="btn btn-primary" id="color-btn">
+                        <input type="color" id="color-picker" value="#ff0000">
+                    </button>
 		    		<button type="button" class="btn btn-primary" id="play-btn" onclick="play()">
 		    			<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
 		    		</button>
 		    		<button type="button" class="btn btn-primary" id="loop-btn" data-toggle="button" aria-pressed="false" autocomplete="off">
 		    			<span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
-					</button>
+					</button> 
 		    		<button type="button" class="btn btn-primary" id="fullscreen-btn" onclick="toggleFullscreen()">
 		    			<span class="glyphicon glyphicon-resize-full" id="fullscreen-icon" aria-hidden="true"></span>
 		    		</button>

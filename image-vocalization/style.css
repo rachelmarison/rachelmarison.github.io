@@ -1,0 +1,80 @@
+html body {
+	width: 100%;
+	height: auto;
+	font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    background-color: #000; 
+    font-weight: 100;
+    color: #000;
+    text-align: center;
+	padding-top: 5%;
+}
+
+.title {
+	color: #fff;
+}
+
+.background-pic {
+	min-height: 100%;
+	background: url("pixels4.jpg") repeat;
+	background-color: #000; 
+
+}
+
+body h1 {
+	font-weight: 100;
+	margin-bottom: 0;
+}
+
+hr {
+	width: 80%;
+}
+
+#my-canvas {
+	max-width:100%; 
+  	max-height:100%;
+	border:1px solid #d3d3d3;
+	background-color: #d3dce2;
+	border-radius: 4px;
+}
+
+span.label-info {
+	margin-top: 5px;
+	text-align: center;
+	display: block;
+	word-wrap: break-word;
+	white-space: pre-wrap;
+	background-color: transparent;
+	font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+	color: #000;
+}
+
+input {
+	background-color: #337ab7;
+	border: 2px #2e6da4;
+    border-radius: 4px;
+    width: 30px;
+    height: 30px;
+}
+
+#color-btn {
+	padding: 2px;
+}
+
+#canvas-and-btns {
+	border-radius: 4px;
+	background-color: transparent;
+  	position: relative;
+  	height: 75%;
+	width: auto;
+}
+
+.fullscreen {
+	background-color: black;
+	margin: 20% auto;
+}
+
+.btn-array button {
+	margin-left: 10px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+}

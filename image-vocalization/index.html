@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<!-- tutorials/documentary:
+https://code.tutsplus.com/tutorials/introduction-to-web-midi--cms-25220
+https://code.tutsplus.com/series/the-web-audio-api--cms-817
+https://webaudio.github.io/web-midi-api/#conformance 
+https://www.npmjs.com/package/soundfont-player 
+https://github.com/gleitz/midi-js-soundfonts
+https://github.com/mudcube/MIDI.js
+https://github.com/Theodeus/tuna
+-->
+
+<html>
+
+<head>
+
+	<title>Senior Design: Image Vocalization</title>
+	<link rel="stylesheet" href="style.css"/>
+	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="bootstrap/css/bootstrap-select.min.css" rel="stylesheet">
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script src="bootstrap/js/bootstrap.min.js"></script>
+	<script src="bootstrap/js/bootstrap-select.min.js"></script>
+	
+	<script src="screenfull.js"></script>
+	
+	<script src="soundfont-player.min.js"></script>
+	<script type="text/javascript" src="midiAccess.js"></script>
+	<script type="text/javascript" src="SweepController.js"></script>
+	<script type="text/javascript" src="PixelReader.js"></script>
+	<script type="text/javascript" src="MelodyAttributeController.js"></script>
+	<script type="text/javascript" src="MelodyPlayer.js"></script>
+	
+	<script src="MIDI/MIDI.min.js"></script>
+	<script src="MIDI/Base64.js" type="text/javascript"></script>
+	<script src="MIDI/Base64binary.js" type="text/javascript"></script>
+	<script src="MIDI/WebAudioAPI.js" type="text/javascript"></script>
+	<!-- midi.js package -->
+	<script src="MIDI/audioDetect.js" type="text/javascript"></script>
+	<script src="MIDI/gm.js" type="text/javascript"></script>
+	<script src="MIDI/loader.js" type="text/javascript"></script>
+	<script src="MIDI/plugin.audiotag.js" type="text/javascript"></script>
+	<script src="MIDI/plugin.webaudio.js" type="text/javascript"></script>
+	<script src="MIDI/plugin.webmidi.js" type="text/javascript"></script>
+	<!-- utils -->
+	<script src="MIDI/dom_request_xhr.js" type="text/javascript"></script>
+	<script src="MIDI/dom_request_script.js" type="text/javascript"></script>
+	
+	<script src="tuna-min.js"></script>
+
+	<script>
+		window.onload = function() {
+			var elem = document.getElementById('my-canvas');
+			var fullscreen= document.getElementById('canvas-and-btns');
+			elem.addEventListener('click', () => {
+			    if (screenfull.enabled && elem.getAttribute("src") != "#") {
+			        screenfull.toggle(fullscreen);
+			    }
+			});
+
+			if (screenfull.enabled) {
+			    document.addEventListener(screenfull.raw.fullscreenchange, () => {
+			        setFullscreenBackground(fullscreen);
+			    });
+			}
+
+		}
+
+		function toggleFullscreen() {
+			var elem = document.getElementById('my-canvas');
+			var fullscreen= document.getElementById('canvas-and-btns');
+		    if (screenfull.enabled && elem.getAttribute("src") != "#") {
+		        screenfull.toggle(fullscreen);
+		    }
+		}
+
+		function setFullscreenBackground(fullscreen) {
+			fullscreenBtn = document.getElementById('fullscreen-icon');
+			if (screenfull.isFullscreen) {
+				fullscreenBtn.className = "glyphicon glyphicon-resize-small";
+				$(fullscreen).addClass("fullscreen");
+			} else {
+				fullscreenBtn.className = "glyphicon glyphicon-resize-full";
+				$(fullscreen).removeClass("fullscreen");
+			}
+		}
+
+		function readURL(input) {
+			$('#upload-file-info').html($(input).val());
+		    if (input.files && input.files[0]) {
+
+		        var reader = new FileReader();
+		        reader.onload = function (e) {
+		            setUpCanvas(e);
+		        }
+		        reader.readAsDataURL(input.files[0]);
+		    }
+		}
+
+	</script>
+
+</head>
+
+<body class="background-pic">
+	<!-- <div class="title">
+		<h1>Senior Design: Image Vocalization</h1>
+	</div>
+	<hr> -->
+
+<!--     	<img id="user-img" src="pixels4.jpg" alt="your uploaded image"/> <br>
+ -->
+ 	   	<!-- <button id="midi-btn" onclick="getMidi()">Get Midi Access</button> -->
+	<div class="container">
+		<div class="col-md-5 col-xs-5">
+	   		<!-- <div class="jumbotron"> -->
+   			<div class="panel-group" role="tablist" aria-multiselectable="true">
+			    	
+		    	<!-- group 1: image-->
+				<div class="panel panel-default">
+				    <div class="panel-heading" role="tab" id="headingOne" data-toggle="collapse" data-target="#collapseOne">
+				     	<h4 class="panel-title">
+					        <a class="collapsed" role="button" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">Select an Image</a>
+				      	</h4>
+				    </div>
+				    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+			      		<div class="panel-body">
+			         		<!-- <label class="btn btn-default btn-file">
+					   		Select Image <input type="file" id="image-input" onchange="readURL(this);" style="display: none;">
+							</label> -->
+							<label class="btn btn-default" for="image-input">
+							    <input id="image-input" type="file" style="display:none;" onchange="readURL(this);">
+							    Upload <span class="glyphicon glyphicon-open" aria-hidden="true"></span>
+							</label>
+							<span class='label label-info' id="upload-file-info"></span>
+				   			<!-- <div class="upload">
+				   				<input type="file" id="image-input" onchange="readURL(this);"/> <br>
+				   			</div> -->
+			      		</div>
+				    </div>
+				</div>
+
+				<!-- group 2: sweeper -->
+				<div class="panel panel-default">
+				    <div class="panel-heading" role="tab" id="headingTwo" data-toggle="collapse" data-target="#collapseTwo">
+				     	<h4 class="panel-title">
+					        <a class="collapsed" role="button" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">Select a sweeping pattern:</a>
+				      	</h4>
+				    </div>
+				    <div id="collapseTwo" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingTwo">
+			      		<div class="panel-body">
+			         		<form id="sweep-form">
+						 	   	<!-- Left to Right: <input type="radio" name="sweeps" id="left-to-right" value="left-to-right">
+						 	   	Right to Left: <input type="radio" name="sweeps" id="right-to-left" value="right-to-left">
+						 	   	Top to Bottom: <input type="radio" name="sweeps" id="top-to-bottom" value="top-to-bottom">
+						 	    Bottom to Top: <input type="radio" name="sweeps" id="bottom-to-top" value="bottom-to-top">
+						 	    Blocked: <input type="radio" name="sweeps" id="blocked" value="blocked"> -->
+								<select class="selectpicker" id="sweeper-picker" title="select one...">
+									<option selected = "selected" value="left-to-right">Left to Right</option>
+								  	<option value="right-to-left">Right to Left</option>
+								  	<option value="top-to-bottom">Top to Bottom</option>
+								  	<option value="bottom-to-top">Bottom to Top</option>
+								  	<option value="blocked">Blocked</option>
+								  	<option value="swirled">Swirled</option>
+								  	<option value="shuffle">Shuffle</option>
+								</select>
+					 	   	</form>
+			      		</div>
+				    </div>
+				</div>
+
+				<!-- group 3: key -->
+				<div class="panel panel-default">
+				    <div class="panel-heading" role="tab" id="headingThree" data-toggle="collapse" data-target="#collapseThree">
+				     	<h4 class="panel-title">
+					        <a class="collapsed" role="button" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">Select a key to play in:</a>
+				      	</h4>
+				    </div>
+				    <div id="collapseThree" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingThree">
+			      		<div class="panel-body">
+			         		<form id="key-form">
+							 	<!-- C: <input type="radio" id="keyOfC" value="keyOfC">
+							 	G: <input type="radio" id="keyOfG" value="keyOfG">
+							 	D: <input type="radio" id="keyOfD" value="keyOfD">
+							 	A: <input type="radio" id="keyOfA" value="keyOfA"> -->
+							 	<select class="selectpicker" id="key-picker" title="select one...">
+							 		<option value="keyOfF">F</option>
+									<option selected = "selected" value="keyOfC">C</option>
+								  	<option value="keyOfG">G</option>
+								  	<option value="keyOfD">D</option>
+								  	<option value="keyOfA">A</option>
+								  	<option value="keyOfE">E</option>
+								  	<option value="keyOfB">B</option>
+								  	<option value="keyOfGb">Gb</option>
+								  	<option value="keyOfDb">Db</option>
+								  	<option value="keyOfAb">Ab</option>
+								  	<option value="keyOfEb">Eb</option>
+								  	<option value="keyOfBb">Bb</option>
+								</select>
+						 	</form>
+			      		</div>
+				    </div>
+				</div>
+
+				<!-- group 4: instrument -->
+				<div class="panel panel-default">
+				    <div class="panel-heading" role="tab" id="headingFour" data-toggle="collapse" data-target="#collapseFour">
+				     	<h4 class="panel-title">
+					        <a class="collapsed" role="button" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">Select an instrument to play:</a>
+				      	</h4>
+				    </div>
+				    <div id="collapseFour" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingFour">
+			      		<div class="panel-body">
+			         		<form id="instrument-form">
+							 	<select class="selectpicker" id="instrument-picker" title="select one...">
+									<option selected = "selected" value="acoustic_grand_piano">Piano</option>
+									<option value="acoustic_guitar_steel">Steel Guitar</option>
+									<option value="acoustic_guitar_nylon">Nylon Guitar</option>
+									<option value="acoustic_bass">Bass Guitar</option>
+									<option value="alto_sax">Alto Sax</option>
+									<option value="banjo">Banjo</option>
+									<option value="bassoon">Bassoon</option>
+									<option value="cello">Cello</option>
+									<option value="clarinet">Clarinet</option>
+									<option value="french_horn">French Horn</option>
+									<option value="flute">Flute</option>
+									<option value="trumpet">Trumpet</option>
+									<option value="violin">Violin</option>
+								</select>
+						 	</form>
+			      		</div>
+				    </div>
+				</div>
+
+				<!-- group 5: sweeper color -->
+			<!-- 	<div class="panel panel-default">
+				    <div class="panel-heading" role="tab" id="headingFive" data-toggle="collapse" data-target="#collapseFive">
+				     	<h4 class="panel-title">
+					        <a class="collapsed" role="button" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">Select a sweeper color:</a>
+				      	</h4>
+				    </div>
+				    <div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+			      		<div class="panel-body">
+			         		<form action="action_page.php">
+								<input type="color" id="color-picker" value="#ff0000">
+							</form>
+			      		</div>
+				    </div>
+				</div> -->
+
+				<!-- group 5: sound effects -->
+				<div class="panel panel-default">
+				    <div class="panel-heading" role="tab" id="headingSix" data-toggle="collapse" data-target="#collapseSix">
+				     	<h4 class="panel-title">
+					        <a class="collapsed" role="button" href="#collapseSix" aria-expanded="false" aria-controls="collapseSix">Select a sound effect:</a>
+				      	</h4>
+				    </div>
+				    <div id="collapseSix" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingSix">
+			      		<div class="panel-body">
+			         		<form id="effects-form">
+							 	<select class="selectpicker" id="effects-picker" title="select one...">
+									<option selected = "selected" value="wah-wah">Wah Wah</option>
+									<option value="tremolo">Tremolo</option>
+									<option value="phaser">Phaser</option>
+									<option value="chorus">Chorus</option>
+									<option value="delay">Delay</option>
+									<!-- <option value="bitcrusher">Bitcrusher</option>
+									<option value="moog">Moog</option>
+									<option value="overdrive">Overdrive</option> -->
+									<option value="pingpong">Ping Pong Delay</option>
+									<option value="panner">Stereo Panner</option>
+									<option value="gain">Gain</option>
+									<option value="none">None</option>
+								</select>
+						 	</form>
+			      		</div>
+				    </div>
+				</div>
+
+			</div>
+
+		</div>
+		<div class="col-md-5 col-xs-5 col-md-offset-1">
+			<div id="canvas-and-btns">
+	    		<canvas id="my-canvas" src="#"></canvas>
+	    		<hr>
+	    		<div class="btn-array">
+		    		<button type="button" class="btn btn-primary" id="color-btn">
+						<input type="color" id="color-picker" value="#ff0000">
+		    		</button>
+		    		<button type="button" class="btn btn-primary" id="play-btn" onclick="play()">
+		    			<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+		    		</button>
+		    		<button type="button" class="btn btn-primary" id="loop-btn" data-toggle="button" aria-pressed="false" autocomplete="off">
+		    			<span class="glyphicon glyphicon-repeat" aria-hidden="true"></span>
+					</button>
+		    		<button type="button" class="btn btn-primary" id="fullscreen-btn" onclick="toggleFullscreen()">
+		    			<span class="glyphicon glyphicon-resize-full" id="fullscreen-icon" aria-hidden="true"></span>
+		    		</button>
+		    	</div>
+		    </div>
+    	</div>
+	</div>
+
+
+</body>
+</html>

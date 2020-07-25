@@ -96,54 +96,42 @@ function createAndPlayMelody(pixelGroups, key, sweep, instrument) {
 	});
 }
 
-function playChord(chord, delay) {
-    MIDI.chordOn(0, chord, 127, delay);
-    MIDI.chordOff(0, chord, delay+1);
+function playChord(chord, start, delay) {
+    MIDI.chordOn(0, chord, 127, start);
+    MIDI.chordOff(0, chord, start+delay);
 }
 
 function playNotes(i, notesData) {
 
-    totalDelay = 0;
+    currentStart = 0;
     for (i = 0; i < notesData.length; i++) {
-        totalDelay += notesData[i].duration;
-		oldSweepPos = drawNextSweeper(oldSweepPos, canvas, imgContext, sweep);
-		setFilters(notesData[i].lum, effect);
+        note = notesData[i];
+		//oldSweepPos = drawNextSweeper(oldSweepPos, canvas, imgContext, sweep);
+		setFilters(note.lum, effect);
 
         MIDI.setVolume(0, 127);
-        playChord([notesData[i].redNote, notesData[i].greenNote, notesData[i].blueNote], i);
+        playChord([note.redNote, note.greenNote, note.blueNote], currentStart/1000, note.duration/1000);
+        currentStart += note.duration;
     }
-
-    //once I set up delay on playChord to actually be based on duration, this timeout should line up correctlye
+    
+    animateSweeper(notesData.length, currentStart);
     setTimeout(function() {
         isPlaying = false;
-    }, totalDelay)
+        looper = $('#loop-btn');
+		if (looper.hasClass('active')) {
+			play();
+        }
+    }, currentStart);
 }
 
-//function playNotes(i, notesData) {
-    //if (!isPlaying) {
-      //  imgContext.clearRect(0, 0, canvas.width, canvas.height);
-    //    imgContext.drawImage(uploadedImg, 0, 0);
-  //  } else if (i < notesData.length) {
-//		oldSweepPos = drawNextSweeper(oldSweepPos, canvas, imgContext, sweep);
-//		setFilters(notesData[i].lum, effect);
-//
-//        MIDI.setVolume(0, 127);
-  //      playChord([notesData[i].redNote, notesData[i].greenNote, notesData[i].blueNote], i);
-//        playNotes(i+1, notesData);
-        //MIDI.chordOn(0, [notesData[i].redNote, notesData[i].greenNote, notesData[i].blueNote], velocity);
-    	//setTimeout(function(){
-	   // 		MIDI.chordOff(0, [notesData[i].redNote, notesData[i].greenNote, notesData[i].blueNote]);
-	   // 		playNotes(i+1, notesData);
-	   // 	}, notesData[i].duration);
-//	} else {
-//			looper = $('#loop-btn');
-//			if (looper.hasClass('active')) {
-//				//loop through the song (start playing all over)
-//				isPlaying = false;
-//				play();
-//			} else {
-//				//done playing/looping, so set isPlaying to false
-//				isPlaying = false;
-//			}
-//	}
-//}
+function animateSweeper(numNotes, melodyLength) {
+    delay = melodyLength/numNotes;
+    timerId = setInterval(function() {
+        console.log("in sweep");
+        oldSweepPos = drawNextSweeper(oldSweepPos, canvas, imgContext, sweep);
+    }, delay); 
+    setTimeout(function() { 
+        console.log("clearing..."); 
+        clearInterval(timerId); 
+    }, melodyLength);
+}

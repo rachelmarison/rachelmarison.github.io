@@ -25,10 +25,6 @@ function play() {
 	createAndPlayMelody(pixelGroups, key, sweep, instrument);
 }
 
-function pause() {
-    isPlaying = false;
-}
-
 function setUpCorrectly() {
 	if (uploadedImg == undefined) {
 		alert("Please upload an image before playing.");
@@ -106,30 +102,48 @@ function playChord(chord, delay) {
 }
 
 function playNotes(i, notesData) {
-    if (!isPlaying) {
-        imgContext.clearRect(0, 0, canvas.width, canvas.height);
-        imgContext.drawImage(uploadedImg, 0, 0);
-    } else if (i < notesData.length) {
+
+    totalDelay = 0;
+    for (i = 0; i < notesData.length; i++) {
+        totalDelay += notesData[i].duration;
 		oldSweepPos = drawNextSweeper(oldSweepPos, canvas, imgContext, sweep);
 		setFilters(notesData[i].lum, effect);
 
         MIDI.setVolume(0, 127);
         playChord([notesData[i].redNote, notesData[i].greenNote, notesData[i].blueNote], i);
-        playNotes(i+1, notesData);
+    }
+
+    //once I set up delay on playChord to actually be based on duration, this timeout should line up correctlye
+    setTimeout(function() {
+        isPlaying = false;
+    }, totalDelay)
+}
+
+//function playNotes(i, notesData) {
+    //if (!isPlaying) {
+      //  imgContext.clearRect(0, 0, canvas.width, canvas.height);
+    //    imgContext.drawImage(uploadedImg, 0, 0);
+  //  } else if (i < notesData.length) {
+//		oldSweepPos = drawNextSweeper(oldSweepPos, canvas, imgContext, sweep);
+//		setFilters(notesData[i].lum, effect);
+//
+//        MIDI.setVolume(0, 127);
+  //      playChord([notesData[i].redNote, notesData[i].greenNote, notesData[i].blueNote], i);
+//        playNotes(i+1, notesData);
         //MIDI.chordOn(0, [notesData[i].redNote, notesData[i].greenNote, notesData[i].blueNote], velocity);
     	//setTimeout(function(){
 	   // 		MIDI.chordOff(0, [notesData[i].redNote, notesData[i].greenNote, notesData[i].blueNote]);
 	   // 		playNotes(i+1, notesData);
 	   // 	}, notesData[i].duration);
-	} else {
-			looper = $('#loop-btn');
-			if (looper.hasClass('active')) {
-				//loop through the song (start playing all over)
-				isPlaying = false;
-				play();
-			} else {
-				//done playing/looping, so set isPlaying to false
-				isPlaying = false;
-			}
-	}
-}
+//	} else {
+//			looper = $('#loop-btn');
+//			if (looper.hasClass('active')) {
+//				//loop through the song (start playing all over)
+//				isPlaying = false;
+//				play();
+//			} else {
+//				//done playing/looping, so set isPlaying to false
+//				isPlaying = false;
+//			}
+//	}
+//}

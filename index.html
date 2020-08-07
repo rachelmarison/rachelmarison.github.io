@@ -1,54 +1,121 @@
 <!DOCTYPE html>
 
+<!-- 
+piano pic1: http://www.fontanezrecording.com/wp-content/uploads/2015/12/Headphones-piano-music-for-ads.jpg 
+-->
+
 <html>
-	<head>
-		<meta charset="UTF-8">
-		<title>Rachel Marison's Portfolio</title>
-		<link rel="stylesheet" href="style.css"/>
+  <head>
+    <meta charset="UTF-8">
+    <title>Melody Muse</title>
 
-		<!-- jquery -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-		
-		<!-- Latest compiled and minified CSS -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-		
-		<!-- Optional theme -->
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style.css"/>
 
-		<!-- Latest compiled and minified JavaScript -->
-		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-	</head>
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+    
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+    
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
 
-	<body>
-		<nav class="navbar navbar-default navbar-fixed-top">
-			<div class="container">
-			    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-			    	<ul class="nav navbar-nav">
-				        <li class="active"><a href="index.html">Home<span class="sr-only">(current)</span></a></li>
-				        <li><a href="https://rachelmarison.github.io/image-vocalization">Image Vocalization</a></li>
-				        <li><a href="melody-muse.html">Melody Muse</a></li>
-			    	</ul>
-      			</div>
-      		</div>
-		</nav>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 
-		<section class="intro">
-	    	<div class="container">
-				<h1>Welcome to my Portfolio</h1>
-		    </div>
-	    </section>
+    <!-- Custom Fonts --> 
+      <link href="font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  
+    <script>
+      $(document).ready(function() {
+        $("#arrowBtn").click(function() {
+          $('html, body').animate({
+            scrollTop: $("#carousel").offset().top
+          }, 1000);
+        });
+      });
+    </script>
+  </head>
 
-		<section class="contact">
-    		<h1>Contact Me</h1>
-    		<hr>
+  <body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+          <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="index.html">Melody Muse<span class="sr-only">(current)</span></a></li>
+                <li><a href="image-vocalization/index.html">Image Vocalization</a></li>
+            </ul>
+          </div>
+      </div>
+    </nav>
+  
+    <div class="melody-muse">
+      <h1>MELODY MUSE</h1>
+      <div style="text-align:center;">
+          <div id="arrowBtn" class="btn btn-circle">
+            <i class="fa fa-angle-double-down"></i>
+          </div>
+      </div>
+      <div class="melody-info">
+        <h2>About Melody Muse<h2>
+        <hr>
+        <p>Melody Muse is a fun and educational music app that allows users to create their own songs from included melody fragments. While creating their songs, users learn about basic music theory concepts like the Circle of Fifths, transposing, and time signature.</p>
+      </div>
+    </div>
 
-	    	<div class="email">
-	    		<div class="glyphicon glyphicon-envelope" aria-hidden="true"></div> 
-	    		<br>
-	    		<p> Email: rachel.marison@gmail.com</p>
-	    	</div>
-	    </section>
+    <div id="carousel" class="melody-carousel">
+      <div id="carousel-example-generic" class="carousel slide" style="width: 800px; margin: 0 auto;" data-ride="carousel">
+        
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+          <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+          <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+          <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+          <li data-target="#carousel-example-generic" data-slide-to="3"></li>
+          <li data-target="#carousel-example-generic" data-slide-to="4"></li>
+        </ol>
 
-	    
-	</body>	
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner" role="listbox">
+
+          <div class="item active">
+            <img src="images/mm1.png" alt="Melody Muse opening page">
+          </div>
+
+          <div class="item">
+            <img src="images/mm2.png" alt="Example melody">
+          </div>
+
+          <div class="item">
+            <img src="images/mm3.png" alt="Example of instrument feature">
+          </div>
+
+          <div class="item">
+            <img src="images/mm4.png" alt="Example of drag and drop freature">
+          </div>
+
+          <div class="item">
+            <img src="images/mm5.png" alt="Example of reverse feature">
+          </div>
+
+        </div>
+
+        <!-- Controls -->
+        <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+          <span class="sr-only">Previous</span>
+        </a>
+        <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+          <span class="sr-only">Next</span>
+        </a>
+
+      </div>
+    </div>
+
+  </body> 
 </html>
+
+
+
